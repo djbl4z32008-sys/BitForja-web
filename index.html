@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es-CO"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BitForja – Tecnología gamer en Colombia</title>
+<style>
+:root{--bg:#0b0d12;--card:#151922;--line:#262c3a;--tx:#e8ecf5;--mut:#8a93a8;--ac:#7c5cff;--ac2:#27f5a4;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:#0b0d12ee;backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center;padding:12px 20px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:22px;letter-spacing:-.5px}.logo b{color:var(--ac2)}
+input,select,textarea,button{font:inherit;color:var(--tx);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+#q{flex:1;min-width:160px}button{cursor:pointer;transition:.2s}button:hover{border-color:var(--ac)}
+.pri{background:var(--ac);border-color:var(--ac);font-weight:600}.pri:hover{filter:brightness(1.15)}
+.hero{padding:44px 20px;text-align:center;background:radial-gradient(600px 220px at 50% 0,#7c5cff33,transparent)}
+.hero h1{font-size:clamp(28px,5vw,46px);margin:0 0 8px;letter-spacing:-1px}.hero p{color:var(--mut);margin:0 auto;max-width:620px}
+.warn{background:#2a2410;border:1px solid #6b5a12;color:#f2d675;border-radius:10px;padding:10px 14px;margin:14px 20px;font-size:13px}
+main{display:grid;grid-template-columns:230px 1fr;gap:20px;padding:0 20px 40px;max-width:1280px;margin:auto}
+aside{display:flex;flex-direction:column;gap:10px;align-self:start}aside label{font-size:12px;color:var(--mut)}
+@media(max-width:760px){main{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:6px;transition:.2s}
+.card:hover{transform:translateY(-3px);border-color:var(--ac)}
+.ph{height:110px;border-radius:10px;background:linear-gradient(135deg,#1d2230,#2a2145);display:grid;place-items:center;font-size:34px}
+.tag{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--mut);display:inline-block}
+.tag.n{color:var(--ac2);border-color:#27f5a455}.tag.u{color:#ffb86b;border-color:#ffb86b55}
+.price{font-size:20px;font-weight:700}.est{font-size:11px;color:#f2d675}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.sp{flex:1}
+h2{margin:26px 0 12px}.sm{font-size:12px;color:var(--mut)}
+#drawer{position:fixed;right:0;top:0;bottom:0;width:min(380px,100%);background:#10131a;border-left:1px solid var(--line);transform:translateX(100%);transition:.3s;z-index:9;padding:18px;overflow:auto}
+#drawer.o{transform:none}
+.li{display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:8px 0}
+dialog{background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:14px;max-width:560px;width:92%}
+dialog::backdrop{background:#000a}
+form.f{display:grid;gap:8px}
+footer{border-top:1px solid var(--line);padding:24px 20px;color:var(--mut);font-size:13px;text-align:center}
+.cmp{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13px}td,th{border:1px solid var(--line);padding:6px 8px;text-align:left}
+</style></head><body>
+<header>
+<div class="logo">Bit<b>Forja</b></div>
+<input id="q" placeholder="Buscar por nombre, marca, modelo o categoría…" aria-label="Buscar">
+<button id="bSell">Vender</button><button id="bCmp">Comparar (<span id="nc">0</span>)</button><button class="pri" id="bCart">Carrito (<span id="n">0</span>)</button>
+</header>
+<section class="hero"><h1>Tu próximo setup, aquí en Colombia</h1><p>Consolas, portátiles, componentes y periféricos nuevos y usados. Publica tu tecnología y véndela a otros gamers.</p></section>
+<div class="warn"><b>Versión de prueba (DEMO).</b> Los modelos son reales, pero los precios son <b>estimados y sin verificar</b> (sin fuente ni fecha de consulta) y el inventario es de demostración. No hay pasarela de pago, base de datos ni cuentas: los datos viven solo en este navegador.</div>
+<main>
+<aside>
+<label>Categoría<select id="fc"><option value="">Todas</option></select></label>
+<label>Marca<select id="fb"><option value="">Todas</option></select></label>
+<label>Estado<select id="fs"><option value="">Todos</option><option>Nuevo</option><option>Usado</option><option>Reacondicionado</option></select></label>
+<label>Ciudad<select id="fci"><option value="">Todas</option></select></label>
+<label>Precio máximo (COP)<input id="fp" type="number" min="0" step="50000" placeholder="Sin límite"></label>
+<label>Orden<select id="fo"><option value="rel">Relevancia</option><option value="asc">Precio ↑</option><option value="desc">Precio ↓</option><option value="new">Novedades</option></select></label>
+<label><input type="checkbox" id="fd"> Solo disponibles</label>
+</aside>
+<section><div class="sm" id="cnt"></div><div class="grid" id="grid"></div>
+<h2>¿Quieres vender tecnología usada?</h2><p class="sm">Publica tu artículo con ciudad, estado y descripción. Las publicaciones quedan <b>pendientes de revisión</b>; ninguna aparece como verificada.</p><button class="pri" onclick="bSell.click()">Publicar un artículo</button>
+<h2>Preguntas frecuentes</h2><p class="sm"><b>¿Los precios son reales?</b> Aún no: están marcados como estimados hasta verificarlos con tiendas colombianas.<br><b>¿Puedo pagar?</b> No todavía; falta integrar Wompi o Mercado Pago desde el servidor.</p>
+</section></main>
+<footer>BitForja · Demo sin valor comercial · Políticas de privacidad, garantías y devoluciones: por definir por el negocio.</footer>
+<aside id="drawer"><div class="row"><b>Carrito</b><span class="sp"></span><button onclick="drawer.classList.remove('o')">Cerrar</button></div>
+<div id="items"></div><div class="row" style="margin-top:10px"><input id="cp" placeholder="Cupón (DEMO10)" style="flex:1"><button id="ap">Aplicar</button></div>
+<p class="sm" id="cm"></p><div id="tot"></div>
+<button class="pri" style="width:100%;margin-top:10px" id="ck">Continuar al pago</button><p class="sm" id="ckm"></p></aside>
+<dialog id="dS"><form class="f" id="fs2"><b>Publicar artículo</b>
+<input name="t" required minlength="5" placeholder="Título (marca y modelo)"><div class="row"><input name="p" type="number" required min="1000" placeholder="Precio COP" style="flex:1"><select name="e"><option>Usado</option><option>Reacondicionado</option><option>Nuevo</option></select>
+<select name="c"></select></div><textarea name="d" required minlength="15" rows="3" placeholder="Descripción: defectos, reparaciones, accesorios incluidos"></textarea>
+<input name="g" placeholder="Garantía (si existe)"><div class="sm">Fotos reales: requieren almacenamiento en servidor (pendiente).</div>
+<div class="row"><button type="button" onclick="dS.close()">Cancelar</button><span class="sp"></span><button class="pri">Publicar</button></div></form></dialog>
+<dialog id="dC"><div class="row"><b>Comparación</b><span class="sp"></span><button onclick="dC.close()">Cerrar</button></div><div class="cmp" id="ct"></div></dialog>
+<script>
+const $=id=>document.getElementById(id),F=n=>"$"+n.toLocaleString("es-CO")+" COP";
+const CI=["Bucaramanga","Bogotá","Medellín","Cali"];
+const P=[
+["PlayStation 5 Slim (Edición Disco)","Sony","Consolas","Nuevo","Bogotá",2399900,5,"SSD 1 TB · 4K/120 Hz · lector de discos","🎮"],
+["Xbox Series S 512 GB","Microsoft","Consolas","Nuevo","Medellín",1299900,4,"SSD 512 GB · 1440p · sin lector","🎮"],
+["Nintendo Switch OLED","Nintendo","Consolas","Nuevo","Cali",1499900,3,"Pantalla OLED 7\" · 64 GB","🕹️"],
+["Control DualSense (PS5)","Sony","Consolas","Nuevo","Bucaramanga",329900,10,"Inalámbrico · gatillos adaptativos","🎮"],
+["Lenovo Legion 5 15ARH7H","Lenovo","Computadores","Nuevo","Bogotá",5499900,2,"Ryzen 7 6800H · RTX 3060 · 16 GB · 512 GB","💻"],
+["ASUS TUF Gaming A15 FA507","ASUS","Computadores","Reacondicionado","Bucaramanga",3799900,1,"Ryzen 7 · RTX 4050 · 16 GB (configuración a confirmar)","💻"],
+["AMD Ryzen 7 7800X3D","AMD","Componentes","Nuevo","Medellín",1699900,6,"Socket AM5 · 8 núcleos · 96 MB L3","🧠"],
+["AMD Ryzen 5 7600","AMD","Componentes","Nuevo","Bogotá",849900,8,"Socket AM5 · 6 núcleos · DDR5","🧠"],
+["NVIDIA GeForce RTX 4060 8 GB","NVIDIA","Componentes","Nuevo","Cali",1349900,5,"8 GB GDDR6 · PCIe 4.0 · fuente sugerida 550 W","🖥️"],
+["Corsair Vengeance DDR5 32 GB (2x16) 6000","Corsair","Componentes","Nuevo","Bogotá",599900,9,"DDR5-6000 · kit doble canal","💾"],
+["Kingston NV2 1 TB NVMe","Kingston","Componentes","Nuevo","Bucaramanga",269900,15,"M.2 NVMe PCIe 4.0","💾"],
+["Corsair RM750e 750 W","Corsair","Componentes","Nuevo","Medellín",529900,7,"80 Plus Gold · modular","🔌"],
+["Samsung Odyssey G5 27\" 144 Hz","Samsung","Periféricos","Nuevo","Cali",1099900,4,"QHD · 144 Hz · VA curvo","🖥️"],
+["Logitech G502 HERO","Logitech G","Periféricos","Nuevo","Bucaramanga",189900,12,"Sensor HERO 25K · 11 botones","🖱️"],
+["HyperX Cloud II","HyperX","Periféricos","Usado","Bogotá",179900,1,"7.1 virtual · usado, estado a describir por el vendedor","🎧"],
+["Razer BlackWidow V3","Razer","Periféricos","Nuevo","Medellín",459900,5,"Teclado mecánico · switches Razer Green","⌨️"]
+].map((a,i)=>({id:"DEMO-"+(100+i),n:a[0],b:a[1],c:a[2],s:a[3],ci:a[4],p:a[5],st:a[6],sp:a[7],ic:a[8],t:i,u:false}));
+let S=[...P],cart={},cmp=[],disc=0;
+try{const x=JSON.parse(localStorage.getItem("bf_pub")||"[]");S=[...x,...P]}catch(e){}
+const uniq=k=>[...new Set(S.map(x=>x[k]))].sort();
+uniq("c").forEach(v=>fc.add(new Option(v,v)));uniq("b").forEach(v=>fb.add(new Option(v,v)));CI.forEach(v=>fci.add(new Option(v,v)));
+[...new Set(P.map(x=>x.c))].forEach(v=>fs2.c.add(new Option(v,v)));
+function list(){let t=q.value.trim().toLowerCase();let r=S.filter(x=>(!t||(x.n+x.b+x.c+x.sp).toLowerCase().includes(t))&&(!fc.value||x.c==fc.value)&&(!fb.value||x.b==fb.value)&&(!fs.value||x.s==fs.value)&&(!fci.value||x.ci==fci.value)&&(!fp.value||x.p<=+fp.value)&&(!fd.checked||x.st>0));
+if(fo.value=="asc")r.sort((a,b)=>a.p-b.p);if(fo.value=="desc")r.sort((a,b)=>b.p-a.p);if(fo.value=="new")r.sort((a,b)=>(b.u-a.u)||(b.t-a.t));return r}
+function render(){const r=list();cnt.textContent=r.length+" productos";grid.innerHTML=r.map(x=>`<div class="card"><div class="ph">${x.ic}</div>
+<div class="row"><span class="tag ${x.s=="Nuevo"?"n":"u"}">${x.s}</span><span class="tag">${x.id}</span>${x.u?'<span class="tag">Pendiente de revisión</span>':""}</div>
+<b>${esc(x.n)}</b><span class="sm">${esc(x.b)} · ${x.c} · ${x.ci}</span><span class="sm">${esc(x.sp)}</span>
+<div class="price">${F(x.p)}</div><div class="est">${x.u?"Precio fijado por el vendedor":"Estimado · sin verificar"}</div>
+<div class="sm">${x.st>0?"Stock demo: "+x.st:"Agotado"}</div>
+<div class="row"><button class="pri" onclick="add('${x.id}')" ${x.st?"":"disabled"}>Añadir</button><button onclick="tc('${x.id}')">${cmp.includes(x.id)?"Quitar":"Comparar"}</button></div></div>`).join("")}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+const get=id=>S.find(x=>x.id==id);
+function add(id){const x=get(id);if((cart[id]||0)>=x.st){alert("No hay más unidades disponibles de este producto.");return}cart[id]=(cart[id]||0)+1;cr();drawer.classList.add("o")}
+function ch(id,d){const x=get(id),v=(cart[id]||0)+d;if(v>x.st){alert("Stock máximo alcanzado.");return}if(v<=0)delete cart[id];else cart[id]=v;cr()}
+function cr(){const ids=Object.keys(cart);n.textContent=ids.reduce((a,i)=>a+cart[i],0);
+items.innerHTML=ids.length?ids.map(i=>{const x=get(i);return`<div class="li"><div style="flex:1"><div>${esc(x.n)}</div><div class="sm">${F(x.p)}</div></div><button onclick="ch('${i}',-1)">−</button>${cart[i]}<button onclick="ch('${i}',1)">+</button></div>`}).join(""):'<p class="sm">Tu carrito está vacío.</p>';
+const sub=ids.reduce((a,i)=>a+get(i).p*cart[i],0),d=Math.round(sub*disc),env=ids.length?(sub-d>=1500000?0:25000):0;
+tot.innerHTML=`<div class="row"><span>Subtotal</span><span class="sp"></span>${F(sub)}</div>${d?`<div class="row"><span>Cupón</span><span class="sp"></span>−${F(d)}</div>`:""}<div class="row"><span>Envío (demo)</span><span class="sp"></span>${F(env)}</div><div class="row"><b>Total</b><span class="sp"></span><b>${F(sub-d+env)}</b></div>`}
+ap.onclick=()=>{if(cp.value.trim().toUpperCase()=="DEMO10"){disc=.1;cm.textContent="Cupón DEMO10 aplicado (10 %)."}else{disc=0;cm.textContent="Cupón no válido."}cr()};
+ck.onclick=()=>{ckm.textContent=Object.keys(cart).length?"Pagos no configurados: falta integrar Wompi o Mercado Pago en el servidor. No se ha creado ningún pedido.":"Añade productos primero."};
+function tc(id){if(cmp.includes(id))cmp=cmp.filter(x=>x!=id);else if(cmp.length<4)cmp.push(id);else alert("Máximo 4 productos.");nc.textContent=cmp.length;render()}
+bCmp.onclick=()=>{if(cmp.length<2){alert("Elige al menos 2 productos para comparar.");return}const r=cmp.map(get);
+ct.innerHTML="<table><tr><th></th>"+r.map(x=>`<th>${esc(x.n)}</th>`).join("")+"</tr>"+[["Marca","b"],["Categoría","c"],["Estado","s"],["Ciudad","ci"],["Especificaciones","sp"]].map(([l,k])=>`<tr><td>${l}</td>`+r.map(x=>`<td>${esc(x[k])}</td>`).join("")+"</tr>").join("")+"<tr><td>Precio</td>"+r.map(x=>`<td>${F(x.p)}</td>`).join("")+"</tr></table>";dC.showModal()};
+bSell.onclick=()=>dS.showModal();bCart.onclick=()=>drawer.classList.toggle("o");
+fs2.onsubmit=e=>{e.preventDefault();const f=new FormData(fs2);const x={id:"USR-"+Date.now().toString().slice(-6),n:f.get("t"),b:"Particular",c:f.get("c"),s:f.get("e"),ci:"Bucaramanga",p:+f.get("p"),st:1,sp:f.get("d")+(f.get("g")?" · Garantía: "+f.get("g"):""),ic:"📦",t:Date.now(),u:true};
+S.unshift(x);try{const a=JSON.parse(localStorage.getItem("bf_pub")||"[]");a.unshift(x);localStorage.setItem("bf_pub",JSON.stringify(a))}catch(e){}
+fs2.reset();dS.close();render()};
+[q,fc,fb,fs,fci,fp,fo,fd].forEach(e=>e.addEventListener("input",render));
+render();cr();
+</script></body></html>
